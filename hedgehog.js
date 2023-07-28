@@ -1761,7 +1761,9 @@ var hedgehog = {
       ]["tx2"]
     );
   },
-  alice_penalize: (txid) => {
+  alice_penalize: (tx) => {
+    // tx is easier than txid to obtain in debugging
+    var txid = tapscript.Tx.util.getTxid(tapscript.Tx.decode(tx));
     var secret =
       hedgehog.state["channel_0"].txids_alice_watches_for[txid]["secret"];
     var index =
@@ -1915,7 +1917,9 @@ var hedgehog = {
     var txhex = tapscript.Tx.encode(txdata).hex;
     console.log(txhex);
   },
-  bob_penalize: (txid) => {
+  bob_penalize: (tx) => {
+    // tx is easier than txid to obtain in debugging
+    var txid = tapscript.Tx.util.getTxid(tapscript.Tx.decode(tx));
     var secret =
       hedgehog.state["channel_0"].txids_bob_watches_for[txid]["secret"];
     var index =
