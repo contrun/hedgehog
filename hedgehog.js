@@ -2104,13 +2104,11 @@ for (var key of url_keys) $_GET[key] = url_params.get(key);
 
 var init = async () => {
   if (!$_GET["bob"]) {
-    hedgehog.state["channel_0"].alices_privkey = "ab".repeat(32);
+    hedgehog.state["channel_0"].alices_privkey = "bb".repeat(32);
     hedgehog.state["channel_0"].alices_pubkey = nobleSecp256k1
       .getPublicKey(hedgehog.state["channel_0"].alices_privkey, true)
       .substring(2);
-    var alices_initial_secret = hedgehog
-      .bytesToHex(nobleSecp256k1.utils.randomPrivateKey())
-      .substring(0, 32);
+    var alices_initial_secret = "12".repeat(32);
     var alices_initial_revocation_hash = hedgehog.rmd160(
       hedgehog.hexToBytes(alices_initial_secret)
     );
@@ -2127,22 +2125,21 @@ var init = async () => {
         alices_initial_revocation_hash,
       ])
     );
-    var bobs_pubkey_and_hash = JSON.parse(
-      prompt(`Enter Bob's pubkey and revocation hash`)
-    );
+    var bobs_pubkey_and_hash = [
+      "6a04ab98d9e4774ad806e302dddeb63bea16b5cb5f223ee77478e861bb583eb3",
+      "f3d9241a76dd3fa05db8cbd7cc73ea4d9372fec8",
+    ];
     hedgehog.state["channel_0"].bobs_pubkey = bobs_pubkey_and_hash[0];
     var bobs_initial_revocation_hash = bobs_pubkey_and_hash[1];
     hedgehog.state["channel_0"].bobs_revocation_hashes.push(
       bobs_initial_revocation_hash
     );
   } else {
-    hedgehog.state["channel_0"].bobs_privkey = "ba".repeat(32);
+    hedgehog.state["channel_0"].bobs_privkey = "aa".repeat(32);
     hedgehog.state["channel_0"].bobs_pubkey = nobleSecp256k1
       .getPublicKey(hedgehog.state["channel_0"].bobs_privkey, true)
       .substring(2);
-    var bobs_initial_secret = hedgehog
-      .bytesToHex(nobleSecp256k1.utils.randomPrivateKey())
-      .substring(0, 32);
+    var bobs_initial_secret = "21".repeat(32);
     var bobs_initial_revocation_hash = hedgehog.rmd160(
       hedgehog.hexToBytes(bobs_initial_secret)
     );
@@ -2159,9 +2156,10 @@ var init = async () => {
         bobs_initial_revocation_hash,
       ])
     );
-    var alices_pubkey_and_hash = JSON.parse(
-      prompt(`Enter Alice's pubkey and revocation hash`)
-    );
+    var alices_pubkey_and_hash = [
+      "68680737c76dabb801cb2204f57dbe4e4579e4f710cd67dc1b4227592c81e9b5",
+      "2d55e0e7402d136efced0d3d6c0fbe74111f2904",
+    ];
     hedgehog.state["channel_0"].alices_pubkey = alices_pubkey_and_hash[0];
     var alices_initial_revocation_hash = alices_pubkey_and_hash[1];
     hedgehog.state["channel_0"].alices_revocation_hashes.push(
@@ -2229,6 +2227,9 @@ var init = async () => {
   ];
   hedgehog.state["channel_0"].multisig_or_bob = hedgehog.makeAddress(
     multisig_or_bob_scripts
+  );
+  var txid = console.log(
+    `send some sats to this address and give the txid:\n\n${hedgehog.state["channel_0"].multisig}`
   );
   var txid = prompt(
     `send some sats to this address and give the txid:\n\n${hedgehog.state["channel_0"].multisig}`
