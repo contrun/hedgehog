@@ -132,7 +132,7 @@ var RIPEMD160 = ("object" === typeof module && exports) || {};
       const dv = new DataView(
         this._block.buffer,
         this._block.byteOffset,
-        blockSize,
+        blockSize
       );
       for (let j = 0; j < 16; ++j) {
         words[j] = dv.getInt32(j * 4, true);
@@ -224,7 +224,7 @@ var RIPEMD160 = ("object" === typeof module && exports) || {};
       let dv = new DataView(
         this._block.buffer,
         this._block.byteOffset,
-        blockSize,
+        blockSize
       );
       dv.setUint32(56, this._length[0], true);
       dv.setUint32(60, this._length[1], true);
