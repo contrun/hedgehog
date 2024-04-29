@@ -216,6 +216,12 @@ var hedgehog = {
         hedgehog.state["channel_0"].alices_revocation_preimages[
           hedgehog.state["channel_0"].alices_revocation_preimages.length - 2
         ];
+      console.log(
+        "alice_send secret_to_reveal",
+        secret_to_reveal,
+        "alice_revocation_preimages",
+        hedgehog.state["channel_0"].alices_revocation_preimages
+      );
       var alices_new_secret = hedgehog
         .bytesToHex(nobleSecp256k1.utils.randomPrivateKey())
         .substring(0, 32);
@@ -300,6 +306,8 @@ var hedgehog = {
       var penalty_target = tapscript.Tap.encodeScript(
         hedgehog.state["channel_0"].scripts[2][0]
       );
+      console.log("penalty tx", txdata);
+      console.log("penalty script", hedgehog.state["channel_0"].scripts[2][0]);
       var penalty_sig = tapscript.Signer.taproot.sign(
         hedgehog.state["channel_0"].alices_privkey,
         txdata,
@@ -331,6 +339,7 @@ var hedgehog = {
           ),
         ],
       });
+      console.log("force_close tx", txdata);
       var force_close_sig_1 = tapscript.Signer.taproot.sign(
         hedgehog.state["channel_0"].alices_privkey,
         txdata,
@@ -348,6 +357,12 @@ var hedgehog = {
         1,
         { extension: penalty_target_2 }
       ).hex;
+      console.log(
+        "penalty_target_2",
+        hedgehog.state["channel_0"].scripts[
+          hedgehog.state["channel_0"].scripts.length - 1
+        ][2]
+      );
     }
     var prep_tx = {
       vin: [
@@ -375,6 +390,7 @@ var hedgehog = {
         ),
       ],
     };
+    console.log("alice_send", prep_tx);
     if (zero_out_alices_balance) prep_tx["vout"].splice(0, 1);
     if (zero_out_bobs_balance) prep_tx["vout"].splice(1, 1);
     var txdata = tapscript.Tx.create(prep_tx);
@@ -414,6 +430,12 @@ var hedgehog = {
       hedgehog.state["channel_0"].alices_offchain_tx_info[
         hedgehog.state["channel_0"].alices_offchain_tx_info.length - 1
       ]["force_close_sig_2"] = force_close_sig_2;
+      console.log(
+        "alice latest offchain_tx_info",
+        hedgehog.state["channel_0"].alices_offchain_tx_info[
+          hedgehog.state["channel_0"].alices_offchain_tx_info.length - 1
+        ]
+      );
     }
     var temp = JSON.parse(
       JSON.stringify(
@@ -433,6 +455,10 @@ var hedgehog = {
     if (initialization)
       msg = `To initialize the channel, send Bob the info in your console`;
     alert(msg);
+    console.log(
+      "alice offchain info after send",
+      hedgehog.state["channel_0"].alices_offchain_tx_info
+    );
   },
   bob_receive: async (initialization) => {
     var alices_info = JSON.parse(prompt(`Enter the info from Alice`));
@@ -846,6 +872,7 @@ var hedgehog = {
         ),
       ],
     };
+    console.log(prep_tx, txdata, prep_tx == txdata);
     if (zero_out_alices_balance) prep_tx["vout"].splice(0, 1);
     if (zero_out_bobs_balance) prep_tx["vout"].splice(1, 1);
     var txdata = tapscript.Tx.create(prep_tx);
@@ -938,6 +965,10 @@ var hedgehog = {
       alert(
         `Enter the command 'hedgehog.bob_close()' in your browser console to close the channel with this state:\n\nAlice: ${hedgehog.state["channel_0"].balances_according_to_bob[0]} sats\nBob: ${hedgehog.state["channel_0"].balances_according_to_bob[1]} sats`
       );
+    console.log(
+      "bob offchain info after receive",
+      hedgehog.state["channel_0"].bobs_offchain_tx_info
+    );
   },
   bob_close: () => {
     console.log(`broadcast this:`);
@@ -1022,6 +1053,12 @@ var hedgehog = {
         hedgehog.state["channel_0"].bobs_revocation_preimages[
           hedgehog.state["channel_0"].bobs_revocation_preimages.length - 2
         ];
+      console.log(
+        "bob_send secret_to_reveal",
+        secret_to_reveal,
+        "bobs_revocation_preimages",
+        hedgehog.state["channel_0"].bobs_revocation_preimages
+      );
       var bobs_new_secret = hedgehog
         .bytesToHex(nobleSecp256k1.utils.randomPrivateKey())
         .substring(0, 32);
@@ -1106,6 +1143,8 @@ var hedgehog = {
       var penalty_target = tapscript.Tap.encodeScript(
         hedgehog.state["channel_0"].scripts[1][0]
       );
+      console.log("penalty tx", txdata);
+      console.log("penalty script", hedgehog.state["channel_0"].scripts[1][0]);
       var penalty_sig = tapscript.Signer.taproot.sign(
         hedgehog.state["channel_0"].bobs_privkey,
         txdata,
@@ -1137,6 +1176,7 @@ var hedgehog = {
           ),
         ],
       });
+      console.log("force_close tx", txdata);
       var force_close_sig_1 = tapscript.Signer.taproot.sign(
         hedgehog.state["channel_0"].bobs_privkey,
         txdata,
@@ -1154,6 +1194,12 @@ var hedgehog = {
         1,
         { extension: penalty_target_2 }
       ).hex;
+      console.log(
+        "penalty_target_2",
+        hedgehog.state["channel_0"].scripts[
+          hedgehog.state["channel_0"].scripts.length - 1
+        ][2]
+      );
     }
     var prep_tx = {
       vin: [
@@ -1181,6 +1227,7 @@ var hedgehog = {
         ),
       ],
     };
+    console.log(prep_tx, txdata, prep_tx == txdata);
     if (zero_out_alices_balance) prep_tx["vout"].splice(0, 1);
     if (zero_out_bobs_balance) prep_tx["vout"].splice(1, 1);
     var txdata = tapscript.Tx.create(prep_tx);
@@ -1220,6 +1267,12 @@ var hedgehog = {
       hedgehog.state["channel_0"].bobs_offchain_tx_info[
         hedgehog.state["channel_0"].bobs_offchain_tx_info.length - 1
       ]["force_close_sig_2"] = force_close_sig_2;
+      console.log(
+        "bob latest offchain_tx_info",
+        hedgehog.state["channel_0"].bobs_offchain_tx_info[
+          hedgehog.state["channel_0"].bobs_offchain_tx_info.length - 1
+        ]
+      );
     }
     var temp = JSON.parse(
       JSON.stringify(
@@ -1239,6 +1292,10 @@ var hedgehog = {
     if (initialization)
       msg = `To initialize the channel, send Alice the info in your console`;
     alert(msg);
+    console.log(
+      "bob offchain info after send",
+      hedgehog.state["channel_0"].bobs_offchain_tx_info
+    );
   },
   alice_receive: async (initialization) => {
     var bobs_info = JSON.parse(prompt(`Enter the info from Bob`));
@@ -1745,6 +1802,10 @@ var hedgehog = {
       alert(
         `Enter the command 'hedgehog.alice_close()' in your browser console to close the channel with this state:\n\nAlice: ${hedgehog.state["channel_0"].balances_according_to_alice[0]} sats\nBob: ${hedgehog.state["channel_0"].balances_according_to_alice[1]} sats`
       );
+    console.log(
+      "alice offchain info after receive",
+      hedgehog.state["channel_0"].alices_offchain_tx_info
+    );
   },
   alice_close: () => {
     console.log(`broadcast this:`);
@@ -2232,14 +2293,14 @@ var init = async () => {
   hedgehog.state["channel_0"].multisig_or_bob = hedgehog.makeAddress(
     multisig_or_bob_scripts
   );
-  var txid = console.log(
-    `send some sats to this address and give the txid:\n\n${hedgehog.state["channel_0"].multisig}`
-  );
-  var txid = prompt(
-    `send some sats to this address and give the txid:\n\n${hedgehog.state["channel_0"].multisig}`
-  );
-  var vout = Number(prompt(`and the vout`));
-  var amnt = Number(prompt(`and the amount`));
+  var txid = "3a1015aa1204043f16093a36ca63eec2f0e41ddc4f4bddfe0cfca10266fc9eb1";
+  var vout = Number(0);
+  var amnt = Number(4800000000);
+  //   var txid = prompt(
+  //     `send some sats to this address and give the txid:\n\n${hedgehog.state["channel_0"].multisig}`
+  //   );
+  //   var vout = Number(prompt(`and the vout`));
+  //   var amnt = Number(prompt(`and the amount`));
   hedgehog.state["channel_0"].multisig_utxo_info = {
     txid,
     vout,
@@ -2248,8 +2309,11 @@ var init = async () => {
   hedgehog.state["channel_0"].balances_according_to_alice = [0, amnt];
   hedgehog.state["channel_0"].balances_according_to_bob = [0, amnt];
   var initialization = true;
-  if ($_GET["bob"]) hedgehog.bob_send(amnt - 1_000, initialization);
-  else await hedgehog.alice_receive(initialization);
+  if ($_GET["bob"]) {
+    hedgehog.bob_send(amnt - 1_000, initialization);
+  } else {
+    await hedgehog.alice_receive(initialization);
+  }
   hedgehog.state["channel_0"].balances_according_to_alice = [amnt, 0];
   hedgehog.state["channel_0"].balances_according_to_bob = [amnt, 0];
   alert(
