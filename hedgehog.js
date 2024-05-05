@@ -390,7 +390,7 @@ var hedgehog = {
         ),
       ],
     };
-    console.log("alice_send", prep_tx);
+    console.log("alice_send prep_tx, txdata, prep_tx == txdata", prep_tx, txdata, prep_tx == txdata);
     if (zero_out_alices_balance) prep_tx["vout"].splice(0, 1);
     if (zero_out_bobs_balance) prep_tx["vout"].splice(1, 1);
     var txdata = tapscript.Tx.create(prep_tx);
@@ -872,7 +872,7 @@ var hedgehog = {
         ),
       ],
     };
-    console.log(prep_tx, txdata, prep_tx == txdata);
+    console.log("bob_receive, prep_tx, txdata, prep_tx == txdata", prep_tx, txdata, prep_tx == txdata);
     if (zero_out_alices_balance) prep_tx["vout"].splice(0, 1);
     if (zero_out_bobs_balance) prep_tx["vout"].splice(1, 1);
     var txdata = tapscript.Tx.create(prep_tx);
@@ -1227,7 +1227,7 @@ var hedgehog = {
         ),
       ],
     };
-    console.log(prep_tx, txdata, prep_tx == txdata);
+    console.log("bob_send prep_tx, txdata, prep_tx == txdata", prep_tx, txdata, prep_tx == txdata);
     if (zero_out_alices_balance) prep_tx["vout"].splice(0, 1);
     if (zero_out_bobs_balance) prep_tx["vout"].splice(1, 1);
     var txdata = tapscript.Tx.create(prep_tx);
@@ -1513,7 +1513,7 @@ var hedgehog = {
               amnt - 330 - 500,
               hedgehog.state["channel_0"].multisig_or_alice
             ),
-            hedgehog.getVin(alt_txid, 1, 330, alt_revocable),
+            hedgehog.getVin(alt_txid, 1, 330, alt_revocable, 5),
           ],
           vout: [
             hedgehog.getVout(
@@ -1710,6 +1710,7 @@ var hedgehog = {
         ),
       ],
     };
+    console.log("alice_receive prep_tx, txdata, prep_tx == txdata", prep_tx, txdata, prep_tx == txdata);
     if (zero_out_alices_balance) prep_tx["vout"].splice(0, 1);
     if (zero_out_bobs_balance) prep_tx["vout"].splice(1, 1);
     var txdata = tapscript.Tx.create(prep_tx);
